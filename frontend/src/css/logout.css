@@ -1,0 +1,95 @@
+/* logout */
+
+.modal.hidden {
+  display: none;
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 5;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+}
+.modal-content {
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  padding: 12px;
+  width: 400px;
+  text-align: center;
+  position: relative;
+}
+
+.logout-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn.logout {
+  margin-left: 39%;
+  padding: 10px;
+  border: none;
+  background: none;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  text-align: left;
+  background: #00aaff;
+  transition: all 0.3s;
+  border-radius: 5px;
+}
+
+.btn.logout:hover {
+  opacity: 0.8;
+}
+
+.cancel-btn {
+  background-color: #f44336;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.cancel-btn:hover {
+  background-color: #d32f2f;
+}
+
+.confirm {
+  background-color: #00aaff;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.confirm:hover {
+  background-color: #00aaff86;
+}
+
+/* .nav-actions .btn {
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
+    background: #00aaff;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.nav-actions .btn.start-topic {
+    background: #0056b3;
+}
+
+.nav-actions .btn:hover {
+    opacity: 0.8;
+} */

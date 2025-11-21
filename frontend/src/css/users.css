@@ -1,0 +1,257 @@
+.online-list-container {
+  padding: 20px 0;
+}
+
+.online-list {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.online-list:hover {
+  background-color: #f5f5f5;
+}
+
+.online-list .online {
+  position: relative;
+  margin-right: 12px;
+}
+
+.online-list .online img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.online-list p {
+  font-size: 14px;
+  color: #1d1d1d;
+  margin: 0;
+}
+
+/* Status indicator */
+.status-indicator {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2px solid white;
+  background-color: #ff9800;
+}
+
+.status-indicator.status-online {
+  background-color: #44b700;
+}
+
+/* Section headers */
+.section-header {
+  padding: 0 20px;
+  margin: 20px 0 10px;
+  font-size: 13px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Chat window styles */
+.chat-container {
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+  display: flex;
+  gap: 20px;
+  z-index: 1000;
+}
+
+.chat-window {
+  width: 320px;
+  background: white;
+  border-radius: 12px 12px 0 0;
+
+  chat-user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .chat-user-info img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .chat-user-info span {
+    font-weight: 500;
+    color: #1d1d1d;
+  }
+
+  #chat {
+    padding: 16px;
+    height: 320px;
+    overflow-y: scroll;
+    background: #f8f9fa;
+  }
+
+  .message-bubble {
+    max-width: 80%;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.4;
+    overflow-wrap: break-word;
+  }
+
+  .message-outgoing {
+    background: #0084ff;
+    color: white;
+    margin-left: auto;
+    border-radius: 16px 16px 4px 16px;
+  }
+
+  .message-incoming {
+    background: #e4e6eb;
+    color: #1d1d1d;
+    border-radius: 16px 16px 16px 4px;
+  }
+
+  .chat-input {
+    padding: 16px;
+    background: white;
+    border-top: 1px solid #eee;
+  }
+
+  .chat-input input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e4e6eb;
+    border-radius: 24px;
+    outline: none;
+    font-size: 14px;
+  }
+
+  .chat-input input:focus {
+    border-color: #0084ff;
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 4px;
+    font-size: 20px;
+  }
+
+  .close-button:hover {
+    color: #1d1d1d;
+  }
+
+  /* typing indicator */
+  #typing {
+    display: none;
+  }
+
+  /* Groups section */
+  .groups-section {
+    margin-top: 24px;
+  }
+
+  .group-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    cursor: pointer;
+  }
+
+  .group-item:hover {
+    background-color: #f5f5f5;
+  }
+
+  .group-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 500;
+  }
+
+  .timestamp {
+    font-size: 12px;
+    color: #666;
+    margin-left: auto;
+  }
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.chat-header {
+  padding: 16px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat-user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-user-info img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.chat-user-info span {
+  font-weight: 500;
+  color: #1d1d1d;
+}
+
+/* Groups section */
+.groups-section {
+  margin-top: 24px;
+}
+
+.group-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  cursor: pointer;
+}
+
+.group-item:hover {
+  background-color: #f5f5f5;
+}
+
+.group-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 500;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: #666;
+  margin-left: auto;
+}

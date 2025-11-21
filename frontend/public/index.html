@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Community Page</title>
+    <link rel="stylesheet" href="static/src/css/mainpage.css" />
+    <link rel="stylesheet" href="static/src/css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://cdn.oaistatic.com/assets/favicon-dark-32x32-gt5kfzyp.webp"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link rel="stylesheet" href="static/src/css/post.css" />
+    <link rel="stylesheet" href="static/src/css/style.css" />
+    <link rel="stylesheet" href="static/src/css/responsive.css" />
+    <link rel="stylesheet" href="static/src/css/logout.css" />
+    <link rel="stylesheet" href="static/src/css/users.css" />
+    <script src="static/src/app.js" type="module"></script>
+  </head>
+
+  <body>
+    <div class="toast-container"></div>
+
+    <div class="modal-container modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Logout</h2>
+          <span class="close">
+            <svg
+              class="close-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+          </span>
+        </div>
+        <div class="modal-body"></div>
+      </div>
+    </div>
+    <div class="popup-container hidden"></div>
+    <div id="root"></div>
+    <noscript>Your browser does not support JavaScript!</noscript>
+  </body>
+</html>
