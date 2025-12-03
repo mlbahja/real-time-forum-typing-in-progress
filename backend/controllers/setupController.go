@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
+	"log"
 )
 
 // MakeFirstUserAdmin is a one-time setup endpoint to make the first registered user an admin
@@ -103,6 +104,52 @@ func MigrateDatabase(db *sql.DB) http.HandlerFunc {
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"message": "Migration successful! is_admin column added. IMPORTANT: Remove the /setup/migrate endpoint from your code!",
 			"success": true,
+		})
+	}
+}
+
+// CheckMySession is a debug endpoint to verify session and admin status
+// IMPORTANT: Remove this route after debugging!
+func CheckMySession(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		cookie, err := r.Cookie("session_id")
+		if err != nil {
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"error": "No session cookie found",
+				"logged_in": false,
+			})
+			return
+		}
+
+		log.Printf("Session ID from cookie: %s", cookie.Value)
+
+		var userID, username string
+		var isAdmin int
+		query := `
+			SELECT u.user_id, u.username, u.is_admin
+			FROM users u
+			JOIN sessions s ON CAST(u.user_id AS TEXT) = s.user_id
+			WHERE s.session_id = ?
+		`
+		err = db.QueryRow(query, cookie.Value).Scan(&userID, &username, &isAdmin)
+		if err != nil {
+			log.Printf("Query error: %v", err)
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"error": "Session not found or expired: " + err.Error(),
+				"logged_in": false,
+			})
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"logged_in": true,
+			"user_id": userID,
+			"username": username,
+			"is_admin": isAdmin == 1,
+			"message": "Session is valid",
 		})
 	}
 }

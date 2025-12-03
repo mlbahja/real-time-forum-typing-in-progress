@@ -16,7 +16,7 @@ func CheckIsAdmin(db *sql.DB, r *http.Request) (bool, error) {
 	query := `
 		SELECT u.is_admin
 		FROM users u
-		JOIN sessions s ON u.user_id = s.user_id
+		JOIN sessions s ON CAST(u.user_id AS TEXT) = s.user_id
 		WHERE s.session_id = ?
 	`
 	err = db.QueryRow(query, cookie.Value).Scan(&isAdmin)
