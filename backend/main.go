@@ -6,12 +6,19 @@ import (
 	"forum/routes"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
-	// Use relative paths that work both in development and Docker
-	dbPath := "../database/forum.db"
-	schemaPath := "../database/schema.sql"
+	// Check if database exists in Docker location first, then fallback to dev location
+	dbPath := "./database/forum.db"
+	schemaPath := "./database/schema.sql"
+
+	// If running from backend directory (development)
+	if _, err := os.Stat(dbPath); os.IsNotExist(err) {
+		dbPath = "../database/forum.db"
+		schemaPath = "../database/schema.sql"
+	}
 
 	config.DB = config.InitDB(dbPath)
 	config.CreateDatabaseTables(config.DB, schemaPath)
