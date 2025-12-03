@@ -7,7 +7,7 @@ import (
 
 // CheckIsAdmin checks if the current user is an admin
 func CheckIsAdmin(db *sql.DB, r *http.Request) (bool, error) {
-	cookie, err := r.Cookie("session_id")
+	cookie, err := r.Cookie("session_token")
 	if err != nil {
 		return false, err
 	}

@@ -112,7 +112,7 @@ func MigrateDatabase(db *sql.DB) http.HandlerFunc {
 // IMPORTANT: Remove this route after debugging!
 func CheckMySession(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		cookie, err := r.Cookie("session_id")
+		cookie, err := r.Cookie("session_token")
 		if err != nil {
 			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(map[string]interface{}{
