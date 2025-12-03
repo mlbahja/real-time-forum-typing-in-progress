@@ -153,3 +153,66 @@ func CheckMySession(db *sql.DB) http.HandlerFunc {
 		})
 	}
 }
+
+// ViewDatabase is a debug endpoint to view database contents
+// IMPORTANT: Remove this route in production!
+func ViewDatabase(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		result := make(map[string]interface{})
+
+		// Get all users
+		usersRows, err := db.Query("SELECT user_id, username, email, first_name, last_name, is_admin, created_at FROM users")
+		if err != nil {
+			http.Error(w, "Failed to query users: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer usersRows.Close()
+
+		var users []map[string]interface{}
+		for usersRows.Next() {
+			var userID int
+			var username, email, firstName, lastName, createdAt string
+			var isAdmin int
+			usersRows.Scan(&userID, &username, &firstName, &lastName, &email, &isAdmin, &createdAt)
+			users = append(users, map[string]interface{}{
+				"user_id":    userID,
+				"username":   username,
+				"email":      email,
+				"first_name": firstName,
+				"last_name":  lastName,
+				"is_admin":   isAdmin == 1,
+				"created_at": createdAt,
+			})
+		}
+		result["users"] = users
+		result["total_users"] = len(users)
+
+		// Get all posts
+		postsRows, err := db.Query("SELECT post_id, user_id, title, category_name, created_at FROM posts")
+		if err != nil {
+			http.Error(w, "Failed to query posts: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer postsRows.Close()
+
+		var posts []map[string]interface{}
+		for postsRows.Next() {
+			var postID, title, categoryName, createdAt string
+			var userID int
+			postsRows.Scan(&postID, &userID, &title, &categoryName, &createdAt)
+			posts = append(posts, map[string]interface{}{
+				"post_id":       postID,
+				"user_id":       userID,
+				"title":         title,
+				"category_name": categoryName,
+				"created_at":    createdAt,
+			})
+		}
+		result["posts"] = posts
+		result["total_posts"] = len(posts)
+
+		json.NewEncoder(w).Encode(result)
+	}
+}

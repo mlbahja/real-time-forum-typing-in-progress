@@ -45,8 +45,9 @@ func main() {
 	routes.Socket(config.DB)
 	routes.AdminRoutes(config.DB)
 
-	// Debug endpoint - TODO: Remove after debugging
+	// Debug endpoints - TODO: Remove after debugging
 	http.HandleFunc("/debug/session", controllers.CheckMySession(config.DB))
+	http.HandleFunc("/debug/database", controllers.ViewDatabase(config.DB))
 
 	fmt.Printf("Server is running on http://%s \n", address)
 	log.Printf("Listening on port %s", port)
