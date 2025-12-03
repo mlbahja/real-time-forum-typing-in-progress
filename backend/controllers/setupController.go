@@ -33,7 +33,7 @@ func MakeFirstUserAdmin(db *sql.DB) http.HandlerFunc {
 		// Update user to admin
 		result, err := db.Exec("UPDATE users SET is_admin = 1 WHERE username = ?", reqData.Username)
 		if err != nil {
-			http.Error(w, "Failed to update user", http.StatusInternalServerError)
+			http.Error(w, "Failed to update user: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
 
