@@ -49,6 +49,10 @@ func main() {
 	http.HandleFunc("/debug/session", controllers.CheckMySession(config.DB))
 	http.HandleFunc("/debug/database", controllers.ViewDatabase(config.DB))
 
+	// Setup endpoints - TODO: Remove after setup
+	http.HandleFunc("/setup/migrate", controllers.MigrateDatabase(config.DB))
+	http.HandleFunc("/setup/make-admin", controllers.MakeFirstUserAdmin(config.DB))
+
 	fmt.Printf("Server is running on http://%s \n", address)
 	log.Printf("Listening on port %s", port)
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
