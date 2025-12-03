@@ -207,7 +207,10 @@
                         <td>${user.email}</td>
                         <td>${user.firstname} ${user.lastname}</td>
                         <td>${adminBadge}</td>
-                        <td><button class="btn btn-primary" onclick="toggleAdmin(${user.id}, ${!user.is_admin})">${toggleText}</button></td>
+                        <td>
+                            <button class="btn btn-primary" onclick="toggleAdmin(${user.id}, ${!user.is_admin})">${toggleText}</button>
+                            <button class="btn btn-danger" onclick="deleteUser(${user.id}, '${user.username}')" style="margin-left: 5px;">Delete User</button>
+                        </td>
                     </tr>`;
                 });
                 html += '</tbody></table>';
@@ -275,6 +278,27 @@
                     loadStats();
                 } else {
                     alert('Failed to delete post');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Delete user
+        async function deleteUser(userId, username) {
+            if (!confirm(`Are you sure you want to delete user "${username}"?\n\nThis will permanently delete:\n- The user account\n- All their posts\n- All their comments\n- All their reactions\n- All their chats\n- All their sessions\n\nThis action CANNOT be undone!`)) return;
+
+            try {
+                const response = await fetch(`/admin/delete-user?user_id=${userId}`, {
+                    method: 'DELETE'
+                });
+                if (response.ok) {
+                    alert('User deleted successfully');
+                    loadUsers();
+                    loadStats();
+                } else {
+                    const text = await response.text();
+                    alert('Failed to delete user: ' + text);
                 }
             } catch (error) {
                 alert('Error: ' + error.message);

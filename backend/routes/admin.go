@@ -16,4 +16,5 @@ func AdminRoutes(db *sql.DB) {
 	http.HandleFunc("/admin/delete-post", utils.RequireAdmin(db, controllers.DeletePost(db)))
 	http.HandleFunc("/admin/delete-comment", utils.RequireAdmin(db, controllers.DeleteComment(db)))
 	http.HandleFunc("/admin/toggle-admin", utils.RequireAdmin(db, controllers.ToggleUserAdmin(db)))
+	http.HandleFunc("/admin/delete-user", utils.RequireAdmin(db, controllers.DeleteUser(db)))
 }

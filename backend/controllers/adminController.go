@@ -219,3 +219,86 @@ func ToggleUserAdmin(db *sql.DB) http.HandlerFunc {
 		})
 	}
 }
+
+// DeleteUser allows admin to delete a user and all their data
+func DeleteUser(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodDelete {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		userID := r.URL.Query().Get("user_id")
+		if userID == "" {
+			http.Error(w, "User ID required", http.StatusBadRequest)
+			return
+		}
+
+		// Start a transaction to delete all user data
+		tx, err := db.Begin()
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Failed to start transaction: %v", err), http.StatusInternalServerError)
+			return
+		}
+		defer tx.Rollback()
+
+		// Delete user's reactions
+		_, err = tx.Exec("DELETE FROM Reactions WHERE user_id = ?", userID)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Failed to delete reactions: %v", err), http.StatusInternalServerError)
+			return
+		}
+
+		// Delete user's comments
+		_, err = tx.Exec("DELETE FROM comments WHERE user_id = ?", userID)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Failed to delete comments: %v", err), http.StatusInternalServerError)
+			return
+		}
+
+		// Delete user's posts (CASCADE will delete associated reactions and comments)
+		_, err = tx.Exec("DELETE FROM posts WHERE user_id = ?", userID)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Failed to delete posts: %v", err), http.StatusInternalServerError)
+			return
+		}
+
+		// Delete user's chats
+		_, err = tx.Exec("DELETE FROM chats WHERE sender_id = ? OR receiver_id = ?", userID, userID)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Failed to delete chats: %v", err), http.StatusInternalServerError)
+			return
+		}
+
+		// Delete user's sessions
+		_, err = tx.Exec("DELETE FROM sessions WHERE user_id = ?", userID)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Failed to delete sessions: %v", err), http.StatusInternalServerError)
+			return
+		}
+
+		// Finally, delete the user
+		result, err := tx.Exec("DELETE FROM users WHERE user_id = ?", userID)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Failed to delete user: %v", err), http.StatusInternalServerError)
+			return
+		}
+
+		rows, _ := result.RowsAffected()
+		if rows == 0 {
+			http.Error(w, "User not found", http.StatusNotFound)
+			return
+		}
+
+		// Commit the transaction
+		if err := tx.Commit(); err != nil {
+			http.Error(w, fmt.Sprintf("Failed to commit transaction: %v", err), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"message": "User and all associated data deleted successfully",
+		})
+	}
+}
