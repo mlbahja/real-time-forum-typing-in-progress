@@ -23,7 +23,7 @@ func GetAllUsers(db *sql.DB) http.HandlerFunc {
 			ORDER BY created_at DESC
 		`)
 		if err != nil {
-			http.Error(w, "Failed to fetch users", http.StatusInternalServerError)
+			http.Error(w, fmt.Sprintf("Failed to fetch users: %v", err), http.StatusInternalServerError)
 			return
 		}
 		defer rows.Close()
@@ -32,14 +32,25 @@ func GetAllUsers(db *sql.DB) http.HandlerFunc {
 		for rows.Next() {
 			var user models.User
 			var isAdmin int
+			var createdAtStr string
 			err := rows.Scan(&user.ID, &user.Username, &user.FirstName, &user.LastName,
-				&user.Age, &user.Email, &user.Gender, &isAdmin, &user.CreatedAt)
+				&user.Age, &user.Email, &user.Gender, &isAdmin, &createdAtStr)
 			if err != nil {
+				fmt.Printf("Error scanning user row: %v\n", err)
 				continue
+			}
+			// Parse the created_at string
+			if createdAt, err := time.Parse("2006-01-02 15:04:05", createdAtStr); err == nil {
+				user.CreatedAt = createdAt
 			}
 			user.IsAdmin = isAdmin == 1
 			user.Password = "" // Don't send passwords
 			users = append(users, user)
+		}
+
+		// Initialize empty array if nil
+		if users == nil {
+			users = []models.User{}
 		}
 
 		w.Header().Set("Content-Type", "application/json")
