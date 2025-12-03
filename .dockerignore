@@ -1,0 +1,9 @@
+.git
+.gitignore
+README.md
+docker
+bin
+backend/forum
+*.db-journal
+*.log
+.env

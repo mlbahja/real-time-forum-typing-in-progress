@@ -9,11 +9,15 @@ import (
 )
 
 func main() {
-	config.DB = config.InitDB("../database/forum.db")
-	config.CreateDatabaseTables(config.DB, "../database/schema.sql")
+	// Use relative paths that work both in development and Docker
+	dbPath := "../database/forum.db"
+	schemaPath := "../database/schema.sql"
+
+	config.DB = config.InitDB(dbPath)
+	config.CreateDatabaseTables(config.DB, schemaPath)
 	defer config.DB.Close()
 
-	address := "localhost:8080"
+	address := "0.0.0.0:8081"
 
 	// Existing routes
 	routes.GetChat(config.DB)
@@ -28,7 +32,7 @@ func main() {
 	routes.Socket(config.DB)
 
 	fmt.Printf("Server is running on http://%s \n", address)
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	if err := http.ListenAndServe(":8081", nil); err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
 }

@@ -13,11 +13,13 @@ func Getusers(db *sql.DB) {
 		if r.Method == http.MethodGet {
 			users, err := controllers.Existedusers(db, w, r)
 			if err != nil {
-				fmt.Errorf("TEST : %v", err)
+				http.Error(w, fmt.Sprintf("Error fetching users: %v", err), http.StatusInternalServerError)
+				return
 			}
 			w.Header().Set("Content-Type", "application/json")
 			if err := json.NewEncoder(w).Encode(users); err != nil {
-				fmt.Errorf("errrror %v ", err)
+				http.Error(w, fmt.Sprintf("Error encoding response: %v", err), http.StatusInternalServerError)
+				return
 			}
 		} else {
 			http.Error(w, "Invalid method", http.StatusMethodNotAllowed)

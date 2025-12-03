@@ -7,7 +7,10 @@ const timeout = {};
 
 // initializing the websocket connection
 export function initializeWebsocket() {
-  ws.conn = new WebSocket("ws://localhost:8080/ws");
+  // Use dynamic host to work in different environments
+  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+  const host = window.location.host;
+  ws.conn = new WebSocket(`${protocol}//${host}/ws`);
   ws.conn.onopen = () => {
     console.log("Connected to WebSocket server");
   };
