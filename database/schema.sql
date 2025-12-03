@@ -10,6 +10,7 @@ CREATE TABLE
         email TEXT NOT NULL UNIQUE,
         gender TEXT NOT NULL,
         password TEXT NOT NULL,
+        is_admin INTEGER DEFAULT 0 NOT NULL CHECK (is_admin IN (0, 1)),
         created_at TEXT DEFAULT current_timestamp NOT NULL
     );
 

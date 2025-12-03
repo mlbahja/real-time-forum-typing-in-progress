@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"forum/config"
+	"forum/controllers"
 	"forum/routes"
 	"log"
 	"net/http"
@@ -42,6 +43,10 @@ func main() {
 	routes.CategoriesRoute(config.DB)
 	routes.FilterRoute(config.DB)
 	routes.Socket(config.DB)
+	routes.AdminRoutes(config.DB)
+
+	// One-time setup route - TODO: Remove this after making yourself admin!
+	http.HandleFunc("/setup/make-admin", controllers.MakeFirstUserAdmin(config.DB))
 
 	fmt.Printf("Server is running on http://%s \n", address)
 	log.Printf("Listening on port %s", port)

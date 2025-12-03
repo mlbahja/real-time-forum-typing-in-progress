@@ -44,6 +44,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	validPaths := map[string]bool{
 		"/":      true,
 		"/login": true,
+		"/admin": true,
 	}
 
 	if !validPaths[r.URL.Path] {
@@ -59,5 +60,12 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		w.Write(content)
 		return
 	}
+
+	// Serve admin.html for /admin route
+	if r.URL.Path == "/admin" {
+		http.ServeFile(w, r, filepath.Join(config.STATIC_DIR_PUBLIC, "admin.html"))
+		return
+	}
+
 	http.ServeFile(w, r, filepath.Join(config.STATIC_DIR_PUBLIC, "index.html"))
 }
