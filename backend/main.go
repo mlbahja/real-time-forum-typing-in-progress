@@ -24,7 +24,12 @@ func main() {
 	config.CreateDatabaseTables(config.DB, schemaPath)
 	defer config.DB.Close()
 
-	address := "0.0.0.0:8081"
+	// Get port from environment variable (for Railway, Render, etc.) or default to 8081
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8081"
+	}
+	address := "0.0.0.0:" + port
 
 	// Existing routes
 	routes.GetChat(config.DB)
@@ -39,7 +44,8 @@ func main() {
 	routes.Socket(config.DB)
 
 	fmt.Printf("Server is running on http://%s \n", address)
-	if err := http.ListenAndServe(":8081", nil); err != nil {
+	log.Printf("Listening on port %s", port)
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
 }

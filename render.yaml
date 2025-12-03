@@ -6,6 +6,3 @@ services:
     dockerContext: .
     plan: free
     healthCheckPath: /health
-    envVars:
-      - key: PORT
-        value: 8081
