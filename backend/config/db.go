@@ -9,7 +9,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var DB *sql.DB
 var IsPostgres bool
 
 func InitDB(dataSourceName string) *sql.DB {
